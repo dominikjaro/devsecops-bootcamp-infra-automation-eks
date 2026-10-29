@@ -49,3 +49,39 @@ resource "aws_iam_role_policy" "external_developer_eks_describe" {
     }]
   })
 }
+
+### Role to access AWS Secret Manager ###
+resource "aws_iam_role" "externalsecrets_role" {
+  name = "externalsecrets-sa-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action    = "sts:AssumeRoleWithWebIdentity"
+      Sid       = ""
+      Effect    = "Allow"
+      Federated = module.eks.oidc_provider_arn
+    }]
+  })
+}
+resource "aws_iam_role_policy" "external_secrets_policy" {
+  name = "externalsecrets-sa-role-policy"
+  role = aws_iam_role.externalsecrets_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = [
+        "secretsmanager:GetRandomPassword",
+        "secretsmanager:GetResourcePolicy",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:ListSecretVersionIds",
+        "secretsmanager:ListSecrets",
+        "secretsmanager:BatchGetSecretValue"
+      ]
+      Effect   = "Allow"
+      Resource = "*"
+    }]
+  })
+}
