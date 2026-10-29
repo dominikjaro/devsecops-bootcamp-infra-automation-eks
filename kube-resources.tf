@@ -76,7 +76,7 @@ resource "kubernetes_cluster_role_v1" "restricted_admin" {
   rule {
     api_groups = ["*"]
     resources  = ["*"]
-    verbs      = ["get", "list", "watch"]
+    verbs      = ["get", "list", "watch", "delete"]
   }
   rule {
     api_groups = [""]
