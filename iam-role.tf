@@ -56,32 +56,38 @@ resource "aws_iam_role" "externalsecrets_role" {
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [{
-      Action    = "sts:AssumeRoleWithWebIdentity"
-      Sid       = ""
-      Effect    = "Allow"
-      Federated = module.eks.oidc_provider_arn
-    }]
+    Statement = [
+      {
+        Action = ["sts:AssumeRoleWithWebIdentity"]
+        Effect = "Allow"
+        Sid    = ""
+        // all services within EKS can assume this role
+        Principal = {
+          Federated = module.eks.oidc_provider_arn
+        }
+      },
+    ]
   })
-}
-resource "aws_iam_role_policy" "external_secrets_policy" {
-  name = "externalsecrets-sa-role-policy"
-  role = aws_iam_role.externalsecrets_role.id
+  inline_policy {
+    name = "externalsecrets_sa_policy"
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action = [
-        "secretsmanager:GetRandomPassword",
-        "secretsmanager:GetResourcePolicy",
-        "secretsmanager:GetSecretValue",
-        "secretsmanager:DescribeSecret",
-        "secretsmanager:ListSecretVersionIds",
-        "secretsmanager:ListSecrets",
-        "secretsmanager:BatchGetSecretValue"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect   = "Allow"
+          Resource = "*"
+          Action = [
+            "secretsmanager:GetRandomPassword",
+            "secretsmanager:GetResourcePolicy",
+            "secretsmanager:GetSecretValue",
+            "secretsmanager:DescribeSecret",
+            "secretsmanager:ListSecretVersionIds",
+            "secretsmanager:ListSecrets",
+            "secretsmanager:BatchGetSecretValue"
+          ]
+        },
       ]
-      Effect   = "Allow"
-      Resource = "*"
-    }]
-  })
+    })
+  }
 }
