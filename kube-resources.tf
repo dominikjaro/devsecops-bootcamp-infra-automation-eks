@@ -107,3 +107,16 @@ resource "kubernetes_cluster_role_binding_v1" "restricted_admin_binding" {
     api_group = "rbac.authorization.k8s.io"
   }
 }
+
+### Service Account that can assume aws externalsecrets-role
+resource "kubernetes_service_account" "externalsecrets_sa" {
+  depends_on = [aws_iam_role.externalsecrets_role]
+  metadata {
+    name      = "externalsecrets-sa"
+    namespace = "online-boutique"
+
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.externalsecrets_role.arn
+    }
+  }
+}
