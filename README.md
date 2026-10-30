@@ -61,4 +61,9 @@ rule {
 ```
 * In the file [platform-argo-app.yaml](https://gitlab.com/dominikjaro_devsecops_bootcamp/devsecops-infra-automation-eks/-/blob/feature/5-policy-as-code-dom/platform-argo-app.yaml?ref_type=heads) I define the path to the gitops repo.
 
-## Branch: feature/6-
+## Branch: feature/6-secrets-management
+
+* Manually created a secret in AWS Secrets Manager for the cluster.
+* In Terraform we created a AWS IAM Role with permissions that will be Assumed to READ the secret.
+* Created a K8s Service Account which is mapped to the IAM Role for secret access.
+* Added external_secrets in EKS Blueprints addons.
