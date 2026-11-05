@@ -23,7 +23,7 @@ resource "helm_release" "istio_ingress" {
   repository       = "https://istio-release.storage.googleapis.com/charts"
   namespace        = "istio-ingress"
   create_namespace = true
-  depends_on       = [module.eks, module.vpc]
+  depends_on       = [module.eks, module.vpc, helm_release.istiod]
 
   values = [templatefile("istio-ingress-values.yaml.tftpl", {
     lb_security_group_id = aws_security_group.istio_gateway_lb.id
