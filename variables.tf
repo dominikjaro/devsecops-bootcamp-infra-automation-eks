@@ -24,7 +24,6 @@ variable "tags" {
     App = "eks-devsecops"
   }
 }
-
 variable "user_for_admin_role" {
   default = "arn:aws:iam::387056640672:user/k8s-admin"
 }
