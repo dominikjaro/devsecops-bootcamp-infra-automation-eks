@@ -26,7 +26,7 @@ resource "helm_release" "istio_ingress" {
   depends_on       = [module.eks, module.vpc]
 
   values = [templatefile("istio-ingress-values.yaml.tftpl", {
-    lb_security_group_id = aws_security_group.istio-gateway-lb.id
+    lb_security_group_id = aws_security_group.istio_gateway_lb.id
   })]
 }
 resource "aws_security_group" "istio_gateway_lb" {
