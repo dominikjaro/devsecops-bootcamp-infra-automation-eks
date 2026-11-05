@@ -30,6 +30,10 @@ provider "helm" {
 resource "kubernetes_namespace_v1" "online-boutique" {
   metadata {
     name = "online-boutique"
+
+    labels = {
+      "istio-injection" = "enabled"
+    }
   }
 }
 resource "kubernetes_role_v1" "namespace-viewer" {
@@ -110,7 +114,7 @@ resource "kubernetes_cluster_role_binding_v1" "restricted_admin_binding" {
 
 ### Service Account that can assume aws externalsecrets-role
 resource "kubernetes_service_account" "externalsecrets_sa" {
-  depends_on = [aws_iam_role.externalsecrets_role]
+  depends_on = [aws_iam_role.externalsecrets_role, kubernetes_namespace_v1.online-boutique]
   metadata {
     name      = "externalsecrets-sa"
     namespace = "online-boutique"

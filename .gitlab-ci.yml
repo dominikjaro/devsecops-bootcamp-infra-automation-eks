@@ -142,7 +142,11 @@ cleanup_argocd:
     - kubectl delete -f platform-argo-app.yaml --ignore-not-found=true --timeout=90s
     - kubectl delete ingress --all --all-namespaces --timeout=90s
     - kubectl delete svc frontend-external -n online-boutique --ignore-not-found=true
+    - kubectl delete svc --all-namespaces --ignore-not-found=true
+    - kubectl delete secret --all --all-namespaces --ignore-not-found=true
     - echo "Waiting for AWS to finish deleting Load Balancers..."
+    - helm uninstall metrics-server -n kube-system
+    - helm uninstall external-secrets -n external-secrets
     - sleep 30
   when: manual
 
@@ -151,6 +155,7 @@ cleanup_plan:
     GITLAB_OIDC_TOKEN:
       aud: https://gitlab.com
   stage: cleanup
+  needs: ["cleanup_argocd"]
   before_script:
     # Install aws cli
     - apk --no-cache add curl python3 py3-pip
