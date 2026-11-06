@@ -69,6 +69,7 @@ module "eks" {
       max_size       = 10
       desired_size   = 4
     }
+
   }
   node_security_group_additional_rules = {
     ingress_15017 = {
