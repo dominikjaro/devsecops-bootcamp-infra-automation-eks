@@ -88,7 +88,6 @@ module "eks" {
       type                          = "ingress"
       source_cluster_security_group = true
     }
-
     ingress_istio_sg = {
       description              = "LB port forward to nodes"
       protocol                 = "TCP"
