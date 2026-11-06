@@ -80,7 +80,7 @@ resource "kubernetes_cluster_role_v1" "restricted_admin" {
   rule {
     api_groups = ["*"]
     resources  = ["*"]
-    verbs      = ["get", "list", "watch", "delete"]
+    verbs      = ["get", "list", "watch", "delete", "patch"]
   }
   rule {
     api_groups = [""]
