@@ -92,6 +92,11 @@ resource "kubernetes_cluster_role_v1" "restricted_admin" {
     resources  = ["customresourcedefinitions"]
     verbs      = ["get", "list", "describe"]
   }
+  rule {
+    api_groups = ["security.istio.io"]
+    resources = ["peerauthentications"]
+    verbs = ["get", "list", "describe"]
+  }
 }
 
 resource "kubernetes_cluster_role_binding_v1" "restricted_admin_binding" {
