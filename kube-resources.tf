@@ -94,8 +94,18 @@ resource "kubernetes_cluster_role_v1" "restricted_admin" {
   }
   rule {
     api_groups = ["security.istio.io"]
-    resources = ["peerauthentications"]
-    verbs = ["get", "list", "describe"]
+    resources  = ["peerauthentications"]
+    verbs      = ["get", "list", "describe"]
+  }
+  rule {
+    api_groups = [""]
+    resources  = ["pods/exec", "pods/attach"]
+    verbs      = ["get", "list", "create"]
+  }
+  rule {
+    api_groups = [""]
+    resources  = ["pods"]
+    verbs      = ["get", "list", "create", "describe", "delete", "update"]
   }
 }
 
