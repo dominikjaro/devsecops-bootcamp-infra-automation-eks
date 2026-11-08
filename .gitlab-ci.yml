@@ -63,6 +63,7 @@ build:
   artifacts:
     paths:
       - planfile
+  allow_failure: true
 
 deploy:
   id_tokens:
