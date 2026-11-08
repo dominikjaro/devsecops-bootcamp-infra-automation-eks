@@ -140,9 +140,14 @@ cleanup_argocd:
   script:
     - kubectl delete -f online-boutique-argo-app.yaml --ignore-not-found=true --timeout=90s
     - kubectl delete -f platform-argo-app.yaml --ignore-not-found=true --timeout=90s
+
     - kubectl delete ingress --all --all-namespaces --timeout=90s
     - kubectl delete svc frontend-external -n online-boutique --ignore-not-found=true
+    - kubectl delete svc -n istio-ingress --all --ignore-not-found=true
     - kubectl delete svc --all-namespaces --ignore-not-found=true
+
+    - kubectl delete pvc --all --all-namespaces --timeout=90s --ignore-not-found=true
+
     - kubectl delete secret --all --all-namespaces --ignore-not-found=true
     - echo "Waiting for AWS to finish deleting Load Balancers..."
     - helm uninstall metrics-server -n kube-system
