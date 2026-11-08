@@ -29,6 +29,5 @@ resource "kubernetes_secret_v1" "argocd_gitops_repo" {
     username : var.gitops_username
     password : var.gitops_password
   }
-
   type = "kubernetes.io/basic-auth"
 }
