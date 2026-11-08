@@ -151,8 +151,6 @@ cleanup_argocd:
 
     - kubectl delete secret --all --all-namespaces --ignore-not-found=true
     - echo "Waiting for AWS to finish deleting Load Balancers..."
-    - helm uninstall metrics-server -n kube-system
-    - helm uninstall external-secrets -n external-secrets
     - sleep 30
   when: manual
 
@@ -179,6 +177,7 @@ cleanup_plan:
       --output text))
     - aws sts get-caller-identity
   script:
+    - terraform init
     - terraform plan -destroy
   when: manual
 
