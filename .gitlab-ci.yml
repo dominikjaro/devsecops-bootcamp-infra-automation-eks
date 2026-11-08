@@ -145,7 +145,7 @@ cleanup_argocd:
     - kubectl delete ingress --all --all-namespaces --timeout=90s
     - kubectl delete svc frontend-external -n online-boutique --ignore-not-found=true
     - kubectl delete svc -n istio-ingress --all --ignore-not-found=true
-    - kubectl delete svc --all-namespaces --ignore-not-found=true
+    - kubectl delete svc --all --all-namespaces --ignore-not-found=true
 
     - kubectl delete pvc --all --all-namespaces --timeout=90s --ignore-not-found=true
 
